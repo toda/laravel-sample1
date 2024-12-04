@@ -18,4 +18,15 @@ class ContactForm extends Model
         'age',
         'contact',
     ];
+
+    public function scopeSearch($query, $search)
+    {
+        if ($search !== null) {
+            $search = mb_convert_kana($search, 's');
+            $search_split = preg_split('/[\s]+/', $search);
+            foreach ($search_split as $value) {
+                $query->where('title', 'like', '%' . $value . '%');
+            }
+        }
+    }
 }

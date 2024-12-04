@@ -12,10 +12,14 @@ class ContactFormController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $contacts = ContactForm::select('id', 'name', 'title', 'created_at')->paginate(20);
-        return view('contacts.index', compact('contacts'));
+        $search = $request->search;
+        $query = ContactForm::search($search);
+        //$contacts = ContactForm::select('id', 'name', 'title', 'created_at')->paginate(20);
+        $contacts = $query->select('id', 'name', 'title', 'created_at')->paginate(20);
+
+        return view('contacts.index', compact('contacts', 'search'));
     }
 
     /**
